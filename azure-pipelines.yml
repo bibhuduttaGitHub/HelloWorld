@@ -37,6 +37,8 @@ stages:
         publishLocation: 'pipeline'
 - stage: Deploy
   displayName: Deploy To AKS
+  variables:
+    dockersecret: akssecret
   dependsOn: Build
   jobs:
   - job:
@@ -57,15 +59,19 @@ stages:
     - task: KubernetesManifest@0
       inputs:
         action: 'createSecret'
+        kubernetesServiceConnection: 'MyTerraformAKSCluster'
         namespace: 'default'
         secretType: 'dockerRegistry'
-        secretName: 'dockersecret'
+        secretName: $(dockersecret)
         dockerRegistryEndpoint: 'MyDockerHub'
     - 
     - task: KubernetesManifest@0
       inputs:
         action: 'deploy'
+        kubernetesServiceConnection: 'MyTerraformAKSCluster'
         namespace: 'default'
-        manifests: '$(Pipeline.Workspace)/deployment.yml $(Pipeline.Workspace)/service.yml'
+        manifests: '$(Pipeline.Workspace)/*.yml'
+        containers: '$(imageRepo):$(Build.BuildId)'
+        imagePullSecrets: '$(dockersecret)'
 
 
