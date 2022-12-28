@@ -19,20 +19,14 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
-    - task: Docker@2
-      displayName: Application Image Build
-      inputs:
-        containerRegistry: 'MyDockerHub'
-        repository: 'bwce'
-        command: 'build'
-        Dockerfile: '**/Dockerfile'
-        tags: '$(imageRepo)'
+    
     - task: Docker@2
       displayName: Push To DockerHub
       inputs:
         containerRegistry: 'MyDockerHub'
         repository: 'bwce'
-        command: 'push'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
         tags: '$(imageRepo)'
     - task: PublishPipelineArtifact@1
       displayName: Publish the Application Image
