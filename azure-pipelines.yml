@@ -14,7 +14,7 @@ stages:
 - stage: Build
   displayName: Build Stage
   jobs:
-  - job:
+  - job: Build
     displayName: Build
     pool:
       vmImage: ubuntu-latest
@@ -32,7 +32,7 @@ stages:
         publishLocation: 'pipeline'
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(Pipeline.Workspace)/s/*.yml'
+        targetPath: '$(Build.SourcesDirectory)/kubernetes'
         artifact: 'manifests'
         publishLocation: 'pipeline'
 - stage: Deploy
