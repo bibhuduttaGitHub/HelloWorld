@@ -64,7 +64,7 @@ stages:
         secretType: 'dockerRegistry'
         secretName: $(dockersecret)
         dockerRegistryEndpoint: 'MyDockerHub'
-    - 
+    
     - task: KubernetesManifest@0
       inputs:
         action: 'deploy'
