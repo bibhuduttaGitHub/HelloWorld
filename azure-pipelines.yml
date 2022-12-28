@@ -32,7 +32,7 @@ stages:
         publishLocation: 'pipeline'
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(Pipeline.Workspace)'
+        targetPath: '$(Pipeline.Workspace)/*.yml'
         artifact: 'manifests'
         publishLocation: 'pipeline'
 - stage: Deploy
@@ -54,7 +54,18 @@ stages:
         buildType: 'current'
         artifactName: 'manifests'
         targetPath: '$(Pipeline.Workspace)' 
-    -     
-  
+    - task: KubernetesManifest@0
+      inputs:
+        action: 'createSecret'
+        namespace: 'default'
+        secretType: 'dockerRegistry'
+        secretName: 'dockersecret'
+        dockerRegistryEndpoint: 'MyDockerHub'
+    - 
+    - task: KubernetesManifest@0
+      inputs:
+        action: 'deploy'
+        namespace: 'default'
+        manifests: '$(Pipeline.Workspace)/deployment.yml $(Pipeline.Workspace)/service.yml'
 
 
