@@ -28,7 +28,7 @@ stages:
     - task: PublishPipelineArtifact@1
       inputs:
         targetPath: '$(Pipeline.Workspace)'
-        artifact: '$(imageRepo):$(Build.BuildId)'
+        artifact: '$(imageRepo)'
         publishLocation: 'pipeline'
     - task: PublishPipelineArtifact@1
       inputs:
@@ -49,7 +49,7 @@ stages:
     - task: DownloadPipelineArtifact@2
       inputs:
         buildType: 'current'
-        artifactName: '''$(imageRepo):$(Build.BuildId)'''
+        artifactName: '$(imageRepo)'
         targetPath: '$(Pipeline.Workspace)'
     - task: DownloadPipelineArtifact@2
       inputs:
@@ -71,7 +71,7 @@ stages:
         kubernetesServiceConnection: 'MyTerraformAKSCluster'
         namespace: 'default'
         manifests: '$(Pipeline.Workspace)/*.yml'
-        containers: '$(imageRepo):$(Build.BuildId)'
+        containers: '$(imageRepo)'
         imagePullSecrets: '$(dockersecret)'
 
 
