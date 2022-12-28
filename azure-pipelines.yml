@@ -70,7 +70,7 @@ stages:
         action: 'deploy'
         kubernetesServiceConnection: 'MyTerraformAKSCluster'
         namespace: 'default'
-        manifests: '$(Pipeline.Workspace)/*.yml'
+        manifests: '$(Build.SourcesDirectory)/kubernetes/*.yml'
         containers: '$(imageRepo)'
         imagePullSecrets: '$(dockersecret)'
 
