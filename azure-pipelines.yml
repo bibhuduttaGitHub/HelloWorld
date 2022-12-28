@@ -26,6 +26,7 @@ stages:
         repository: 'bwce'
         command: 'build'
         Dockerfile: '**/Dockerfile'
+        tags: '$(imageRepo)'
     - task: Docker@2
       displayName: Push To DockerHub
       inputs:
