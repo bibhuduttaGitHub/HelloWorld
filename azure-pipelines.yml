@@ -5,9 +5,56 @@
 
 trigger:
 - master
+
+variables:
+  imageRepo: helloworld
+  tag: '$(Build.BuildId)'
+
 stages:
-- stage: Build Image
-  displayName: Build Docker Image
+- stage: Build
+  displayName: Build Stage
+  jobs:
+  - job:
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'MyDockerHub'
+        repository: 'bwce'
+        command: 'build'
+        Dockerfile: '**/Dockerfile'
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Pipeline.Workspace)'
+        artifact: '$(imageRepo):$(Build.BuildId)'
+        publishLocation: 'pipeline'
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Pipeline.Workspace)'
+        artifact: 'manifests'
+        publishLocation: 'pipeline'
+- stage: Deploy
+  displayName: Deploy To AKS
+  dependsOn: Build
+  jobs:
+  - job:
+    displayName: Deploy
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        artifactName: '''$(imageRepo):$(Build.BuildId)'''
+        targetPath: '$(Pipeline.Workspace)'
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        artifactName: 'manifests'
+        targetPath: '$(Pipeline.Workspace)' 
+        
   
 
 pool:
