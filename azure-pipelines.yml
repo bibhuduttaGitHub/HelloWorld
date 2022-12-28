@@ -21,10 +21,10 @@ stages:
     steps:
     
     - task: Docker@2
-      displayName: Push To DockerHub
+      displayName: Build And Push To DockerHub
       inputs:
         containerRegistry: 'MyDockerHub'
-        repository: 'bwce'
+        repository: 'bibhuduttagithub/bwce'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
         tags: '$(imageRepo)'
