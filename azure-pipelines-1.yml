@@ -1,0 +1,20 @@
+trigger:
+- none
+stages:
+- stage:
+  displayName: Terraform Init
+
+  jobs:
+  - job: Initialisation
+    displayName: Initialisation
+    pool:
+      vmimage: ubuntu-latest
+    steps:
+    - 
+      
+
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
