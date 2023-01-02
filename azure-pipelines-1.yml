@@ -10,11 +10,14 @@ stages:
     pool:
       vmimage: ubuntu-latest
     steps:
-    - 
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'MyAzureConnection'
+        scriptType: 'ps'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'terraform init'
       
 
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+
 
